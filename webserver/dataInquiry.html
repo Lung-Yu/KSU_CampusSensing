@@ -79,11 +79,6 @@
 		</div>
 		<div class="col-lg-4">
 			<div>
-				<!-- <v-table class="table" :width="100" :columns="columns" :table-data="tableData"
-					:show-vertical-border="false"></v-table> -->
-
-				<!-- <table class="table table-bordered table-striped" id="tableTest1">
-				</table> -->
 				<table id="demo">
 				</table>
 			</div>
@@ -104,28 +99,13 @@
 		var tableVue = new Vue({
 			el: '#app',
 			data: {
-				label_search: "搜尋",
-				tableData: null,
-				// tableData: [
-				// 	{ "device": "101", "PM1": "156****1987", "PM25": "唱歌", "PM100": "10", "UV": "15", "Time": "2015-11-02" },
-				// 	{ "device": "102", "PM1": "182****1538", "PM25": "唱歌", "PM100": "10", "UV": "15", "Time": "2015-11-02" },
-				// 	{ "device": "103", "PM1": "161****0097", "PM25": "唱歌", "PM100": "10", "UV": "15", "Time": "2015-11-02" },
-				// 	{ "device": "104", "PM1": "197****1123", "PM25": "唱歌", "PM100": "10", "UV": "15", "Time": "2015-11-02" },
-				// 	{ "device": "105", "PM1": "183****6678", "PM25": "唱歌", "PM100": "10", "UV": "15", "Time": "2015-11-02" }],
-				columns: [
-					{ field: 'Device', title: '設備', titleAlign: 'center', columnAlign: 'center' },
-					{ field: 'PM1', title: 'PM1', titleAlign: 'center', columnAlign: 'center' },
-					{ field: 'PM25', title: 'PM2.5', titleAlign: 'center', columnAlign: 'center' },
-					{ field: 'PM100', title: 'PM10', titleAlign: 'center', columnAlign: 'center' },
-					{ field: 'UV', title: 'UV', titleAlign: 'center', columnAlign: 'center' },
-					{ field: 'Time', title: '時間', titleAlign: 'center', columnAlign: 'left' }
-				]
+				label_search: "搜尋"
 			},
 
 			methods: {
 				onSearch: () => {
 
-					$.get("/test.json", function (raw_data, status) {
+					$.get("test.json", function (raw_data, status) {
 						// alert("Data: " + data + "\nStatus: " + status);
 						console.log(raw_data);
 
@@ -173,125 +153,10 @@
 						});
 
 					});
-					// console.log(String(new Date()))
-					// alert(String(new Date()))
-
-					// $.post("setvalue.php",
-					//     {
-					//         PM1:$("#pm1").val(),
-					//         PM25:$("#pm25").val(),
-					//         PM100:$("#pm100").val(),
-					//         UV:$("#uv").val()
-					//     },
-					//     function (data, status) {
-					//         // alert("資料: \n" + data + "\n狀態" + status);
-					//     });
 				},
 			},
 
 		})
-
-
-
-		// var app7 = new Vue({
-		// 	el: '#tableTest1',
-		// 	data: {
-		// 		//message: [],
-		// 		message: [],
-		// 		columns: [{
-		// 			title: 'Device',
-		// 			field: 'Device'
-		// 		},
-		// 		{
-		// 			field: 'PM1',
-		// 			title: 'PM1'
-		// 		}, {
-		// 			field: 'PM25',
-		// 			title: 'PM 2.5'
-		// 		}, {
-		// 			field: 'PM100',
-		// 			title: 'PM 10'
-		// 		}, {
-		// 			field: 'UV',
-		// 			title: 'UV'
-		// 		}, {
-		// 			field: 'Time',
-		// 			title: 'Time'
-		// 		}
-		// 		],
-		// 	},
-		// 	sortName: 'name', //依照那個欄位排序			
-		// 	// height: 450,
-		// 	pagination: true, //使否要分頁
-
-		// 	//可於ToolBar上顯示的按鈕
-		// 	showColumns: true, //顯示/隱藏哪些欄位
-		// 	showToggle: true, //名片式/table式切換
-		// 	showPaginationSwitch: true, //分頁/不分頁切換
-		// 	showRefresh: true, //重新整理
-		// 	search: true, //查詢
-		// 	onPageChange: function (currentPage, pageSize) {
-		// 		console.log("目前頁數:" + currentPage + ",一頁顯示:" + pageSize + "筆");
-		// 	},
-		// 	pageSize: 5, //一頁顯示幾筆
-		// 	pageList: [10, 20, 50, 100], //一頁顯示幾筆的選項
-
-		// 	formatRecordsPerPage: function (pageSize) {
-		// 		return '&nbsp;&nbsp;每頁顯示' + pageSize + '筆';
-		// 	},
-		// 	formatShowingRows: function (fromIndex, toIndex, totalSize) {
-		// 		//目前第幾頁
-		// 		var currentPage = Math.ceil(fromIndex / this.pageSize);
-		// 		//總共幾頁
-		// 		var totalPageCount = Math.ceil(totalSize / this.pageSize);
-		// 		return '第' + currentPage + '頁&nbsp;&nbsp;共' + totalPageCount + '頁';
-		// 	},
-
-		// 	created() {
-		// 		//console.log(this.message)
-		// 		this.getData();
-		// 		this.intervalGetData();
-		// 		//console.log(this.message)
-		// 	},
-
-		// 	methods: {
-		// 		intervalGetData() {
-		// 			setInterval(() => {
-		// 				//      $.get("selectBtTable.php?action=init_data_list", data => {
-		// 				//     var data = JSON.parse(data);
-		// 				//     this.message = data;
-		// 				//     $('#tableTest1').bootstrapTable('load', this.message);
-
-		// 				//     //console.log(JSON.parse(data))
-		// 				//     console.log("get data")
-		// 				// })
-		// 				this.getData();
-		// 			}, 3000)
-
-		// 		},
-		// 		getData() {
-		// 			//es6 箭头函数的写法
-		// 			//    $.get("selectBtTable.php?action=init_data_list", data => {
-		// 			//     var data = JSON.parse(data);
-		// 			//     this.message = data;
-		// 			//     $('#tableTest1').bootstrapTable('load', this.message);
-		// 			//     console.log("init data")
-		// 			// })
-		// 			var that = this;
-		// 			$.get("test.json", function (data) {
-		// 				//var data = JSON.parse(data);
-		// 				that.message = data;
-		// 				$('#tableTest1').bootstrapTable('load', that.message);
-		// 				console.log("init data")
-		// 			})
-		// 		}
-		// 	},
-		// 	mounted() {
-		// 		console.log(this.message + "mounted")
-		// 		$('#tableTest1').bootstrapTable({ columns: this.columns, height: 500, search: true });
-		// 	}
-
-		// })
 
 	</script>
 </body>
