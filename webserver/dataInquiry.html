@@ -8,9 +8,25 @@
 	<title>校園感測系統</title>
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+		integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+		integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.css">
+
+
 	<!-- Vue script -->
 	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 	<script src="https://unpkg.com/vue-easytable/umd/js/index.js"></script>
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+		integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+		integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+		crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+		integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+		crossorigin="anonymous"></script>
+	<script src="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.js"></script>
 	<style id="compiled-css" type="text/css">
 
 	</style>
@@ -25,7 +41,7 @@
 		</div>
 
 	</div>
-	<hr/>
+	<hr />
 	</div>
 	<div id="app" class="row">
 		<div class="col-lg-2">
@@ -63,14 +79,20 @@
 		</div>
 		<div class="col-lg-4">
 			<div>
-				<v-table class="table" :width="100" :columns="columns" :table-data="tableData"
-					:show-vertical-border="false"></v-table>
+				<!-- <v-table class="table" :width="100" :columns="columns" :table-data="tableData"
+					:show-vertical-border="false"></v-table> -->
+
+				<!-- <table class="table table-bordered table-striped" id="tableTest1">
+				</table> -->
+				<table id="demo">
+				</table>
 			</div>
 		</div>
 		<div class="col-lg-2">
 
 		</div>
 	</div>
+
 	<script>
 		var deviceVue = new Vue({
 			el: '#vue_device',
@@ -103,11 +125,53 @@
 			methods: {
 				onSearch: () => {
 
-					$.get("/test.json", function (data, status) {
+					$.get("/test.json", function (raw_data, status) {
 						// alert("Data: " + data + "\nStatus: " + status);
-						console.log(data);
+						console.log(raw_data);
 
-						tableVue.tableData = data;
+						// tableVue.tableData = data;
+
+						$('#demo').bootstrapTable({
+							columns: [ //欄位設定
+								{ field: 'Device', title: '設備', align: 'center', width: 120, visible: true, sortable: true },
+								{ field: 'PM1', title: 'PM1', align: 'center', width: 120, visible: true, sortable: true },
+								{ Field: 'PM25', title: 'PM2.5', align: 'center', width: 120, visible: true, sortable: true },
+								{ field: 'PM100', title: 'PM10', align: 'left', visible: true },
+								{ field: 'UV', title: 'UV', align: 'left', width: 200, visible: true },
+								{ field: 'Time', title: '時間', align: 'left', width: 200, visible: true }
+							],
+							classes: 'table',
+							data: raw_data,//所有資料
+							uniqueId: 'id', //哪一個欄位是key
+							sortName: 'name', //依照那個欄位排序			
+							// height: 450,
+							pagination: true, //使否要分頁
+
+							//可於ToolBar上顯示的按鈕
+							// showColumns: true, //顯示/隱藏哪些欄位
+							// showToggle: true, //名片式/table式切換
+							// showPaginationSwitch: true, //分頁/不分頁切換
+							// showRefresh: true, //重新整理
+							// search: true, //查詢
+
+							onPageChange: function (currentPage, pageSize) {
+								console.log("目前頁數:" + currentPage + ",一頁顯示:" + pageSize + "筆");
+							},
+							pageSize: 5, //一頁顯示幾筆
+							pageList: [10, 20, 50, 100], //一頁顯示幾筆的選項
+
+							formatRecordsPerPage: function (pageSize) {
+								return '&nbsp;&nbsp;每頁顯示' + pageSize + '筆';
+							},
+							formatShowingRows: function (fromIndex, toIndex, totalSize) {
+								//目前第幾頁
+								var currentPage = Math.ceil(fromIndex / this.pageSize);
+								//總共幾頁
+								var totalPageCount = Math.ceil(totalSize / this.pageSize);
+								return '第' + currentPage + '頁&nbsp;&nbsp;共' + totalPageCount + '頁';
+							}
+						});
+
 					});
 					// console.log(String(new Date()))
 					// alert(String(new Date()))
@@ -126,6 +190,109 @@
 			},
 
 		})
+
+
+
+		// var app7 = new Vue({
+		// 	el: '#tableTest1',
+		// 	data: {
+		// 		//message: [],
+		// 		message: [],
+		// 		columns: [{
+		// 			title: 'Device',
+		// 			field: 'Device'
+		// 		},
+		// 		{
+		// 			field: 'PM1',
+		// 			title: 'PM1'
+		// 		}, {
+		// 			field: 'PM25',
+		// 			title: 'PM 2.5'
+		// 		}, {
+		// 			field: 'PM100',
+		// 			title: 'PM 10'
+		// 		}, {
+		// 			field: 'UV',
+		// 			title: 'UV'
+		// 		}, {
+		// 			field: 'Time',
+		// 			title: 'Time'
+		// 		}
+		// 		],
+		// 	},
+		// 	sortName: 'name', //依照那個欄位排序			
+		// 	// height: 450,
+		// 	pagination: true, //使否要分頁
+
+		// 	//可於ToolBar上顯示的按鈕
+		// 	showColumns: true, //顯示/隱藏哪些欄位
+		// 	showToggle: true, //名片式/table式切換
+		// 	showPaginationSwitch: true, //分頁/不分頁切換
+		// 	showRefresh: true, //重新整理
+		// 	search: true, //查詢
+		// 	onPageChange: function (currentPage, pageSize) {
+		// 		console.log("目前頁數:" + currentPage + ",一頁顯示:" + pageSize + "筆");
+		// 	},
+		// 	pageSize: 5, //一頁顯示幾筆
+		// 	pageList: [10, 20, 50, 100], //一頁顯示幾筆的選項
+
+		// 	formatRecordsPerPage: function (pageSize) {
+		// 		return '&nbsp;&nbsp;每頁顯示' + pageSize + '筆';
+		// 	},
+		// 	formatShowingRows: function (fromIndex, toIndex, totalSize) {
+		// 		//目前第幾頁
+		// 		var currentPage = Math.ceil(fromIndex / this.pageSize);
+		// 		//總共幾頁
+		// 		var totalPageCount = Math.ceil(totalSize / this.pageSize);
+		// 		return '第' + currentPage + '頁&nbsp;&nbsp;共' + totalPageCount + '頁';
+		// 	},
+
+		// 	created() {
+		// 		//console.log(this.message)
+		// 		this.getData();
+		// 		this.intervalGetData();
+		// 		//console.log(this.message)
+		// 	},
+
+		// 	methods: {
+		// 		intervalGetData() {
+		// 			setInterval(() => {
+		// 				//      $.get("selectBtTable.php?action=init_data_list", data => {
+		// 				//     var data = JSON.parse(data);
+		// 				//     this.message = data;
+		// 				//     $('#tableTest1').bootstrapTable('load', this.message);
+
+		// 				//     //console.log(JSON.parse(data))
+		// 				//     console.log("get data")
+		// 				// })
+		// 				this.getData();
+		// 			}, 3000)
+
+		// 		},
+		// 		getData() {
+		// 			//es6 箭头函数的写法
+		// 			//    $.get("selectBtTable.php?action=init_data_list", data => {
+		// 			//     var data = JSON.parse(data);
+		// 			//     this.message = data;
+		// 			//     $('#tableTest1').bootstrapTable('load', this.message);
+		// 			//     console.log("init data")
+		// 			// })
+		// 			var that = this;
+		// 			$.get("test.json", function (data) {
+		// 				//var data = JSON.parse(data);
+		// 				that.message = data;
+		// 				$('#tableTest1').bootstrapTable('load', that.message);
+		// 				console.log("init data")
+		// 			})
+		// 		}
+		// 	},
+		// 	mounted() {
+		// 		console.log(this.message + "mounted")
+		// 		$('#tableTest1').bootstrapTable({ columns: this.columns, height: 500, search: true });
+		// 	}
+
+		// })
+
 	</script>
 </body>
 
