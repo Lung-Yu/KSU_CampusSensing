@@ -1,0 +1,69 @@
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <title>校園感測系統</title>
+
+  <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+  <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+
+</head>
+<!-- This snippet uses Font Awesome 5 Free as a dependency. You can download it at fontawesome.io! -->
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+        <div class="card card-signin my-5">
+          <div id="_login" class="card-body">
+            <h5 class="card-title text-center">Sign In</h5>
+            <form class="form-signin" method="POST" action="loginAuth.php">
+              <div class="form-label-group">
+                <input type="text" id="account" class="form-control" placeholder="User Account" required autofocus>
+                <label for="account">
+                  <div>{{label_account}}</div>
+                </label>
+              </div>
+              <div class="form-label-group">
+                <input type="password" id="password" class="form-control" placeholder="Password" required>
+                <label for="password">{{label_password}}</label>
+              </div>
+              <div class="btn btn-lg btn-primary btn-block text-uppercase" v-on:click="onEnter">{{label_login}}</div>
+              <a href="registered.html" class="btn btn-lg btn-info btn-block text-uppercase">{{label_register}}</a>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    new Vue({
+      el: '#_login',
+      data: {
+        label_account: "帳號",
+        label_password: "密碼",
+        label_login: "登入",
+        label_register: "註冊"
+      },
+      methods: {
+
+        onEnter: () => {
+          $.post("login.php",
+            {
+              account: $("#account").val(),
+              password: $("#password").val(),
+            },
+            function (data, status) {
+              // alert("資料: \n" + data + "\n狀態" + status);
+            });
+        },
+      },
+    })
+  </script>
+</body>
+
+</html>

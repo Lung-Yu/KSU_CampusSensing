@@ -1,0 +1,132 @@
+<html lang="zh-tw">
+
+<head>
+	<meta charset="utf-8">
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+		integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<title>校園感測系統</title>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<!-- Vue script -->
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<script src="https://unpkg.com/vue-easytable/umd/js/index.js"></script>
+	<style id="compiled-css" type="text/css">
+
+	</style>
+</head>
+
+<body>
+	<div class="row">
+		<div class="col-lg-2">
+		</div>
+		<div class="col-lg-10">
+			<h1 class="page-header">&nbsp;資料查詢</h1>
+		</div>
+
+	</div>
+	<hr/>
+	</div>
+	<div id="app" class="row">
+		<div class="col-lg-2">
+		</div>
+		<div class="col-lg-4">
+			<div class="panel panel-yellow">
+				<div>
+					<h4> <strong> &nbsp; 設備 </strong></h4>
+					<div id="vue_device">
+						<select class="form-control" v-model="select">
+							<option value="A001">A001</option>
+							<option value="A002">A002</option>
+						</select>
+					</div>
+					<h4>
+						<strong> &nbsp; 開始日期 </strong></h4>
+					<input id="DateS" class="form-control" type="date">
+
+
+					<h4> <strong> &nbsp; 結束日期 </strong></h4>
+					&nbsp;<input id="DateE" class="form-control" type="date">
+					<p>
+
+						<br>
+						<div v-on:click="onSearch" class="btn btn-outline btn-primary">
+							<font size="4">{{label_search}}</font>
+						</div>
+						<a href="index.html" class="btn btn-outline btn-primary">
+							<font size="4">返回</font>
+						</a>
+					</p>
+				</div>
+				<!-- Change this to a button or input when using this as a form -->
+			</div>
+		</div>
+		<div class="col-lg-4">
+			<div>
+				<v-table class="table" :width="100" :columns="columns" :table-data="tableData"
+					:show-vertical-border="false"></v-table>
+			</div>
+		</div>
+		<div class="col-lg-2">
+
+		</div>
+	</div>
+	<script>
+		var deviceVue = new Vue({
+			el: '#vue_device',
+			data: {
+				select: 'A001'
+			}
+		});
+
+		var tableVue = new Vue({
+			el: '#app',
+			data: {
+				label_search: "搜尋",
+				tableData: null,
+				// tableData: [
+				// 	{ "device": "101", "PM1": "156****1987", "PM25": "唱歌", "PM100": "10", "UV": "15", "Time": "2015-11-02" },
+				// 	{ "device": "102", "PM1": "182****1538", "PM25": "唱歌", "PM100": "10", "UV": "15", "Time": "2015-11-02" },
+				// 	{ "device": "103", "PM1": "161****0097", "PM25": "唱歌", "PM100": "10", "UV": "15", "Time": "2015-11-02" },
+				// 	{ "device": "104", "PM1": "197****1123", "PM25": "唱歌", "PM100": "10", "UV": "15", "Time": "2015-11-02" },
+				// 	{ "device": "105", "PM1": "183****6678", "PM25": "唱歌", "PM100": "10", "UV": "15", "Time": "2015-11-02" }],
+				columns: [
+					{ field: 'Device', title: '設備', titleAlign: 'center', columnAlign: 'center' },
+					{ field: 'PM1', title: 'PM1', titleAlign: 'center', columnAlign: 'center' },
+					{ field: 'PM25', title: 'PM2.5', titleAlign: 'center', columnAlign: 'center' },
+					{ field: 'PM100', title: 'PM10', titleAlign: 'center', columnAlign: 'center' },
+					{ field: 'UV', title: 'UV', titleAlign: 'center', columnAlign: 'center' },
+					{ field: 'Time', title: '時間', titleAlign: 'center', columnAlign: 'left' }
+				]
+			},
+
+			methods: {
+				onSearch: () => {
+
+					$.get("/test.json", function (data, status) {
+						// alert("Data: " + data + "\nStatus: " + status);
+						console.log(data);
+
+						tableVue.tableData = data;
+					});
+					// console.log(String(new Date()))
+					// alert(String(new Date()))
+
+					// $.post("setvalue.php",
+					//     {
+					//         PM1:$("#pm1").val(),
+					//         PM25:$("#pm25").val(),
+					//         PM100:$("#pm100").val(),
+					//         UV:$("#uv").val()
+					//     },
+					//     function (data, status) {
+					//         // alert("資料: \n" + data + "\n狀態" + status);
+					//     });
+				},
+			},
+
+		})
+	</script>
+</body>
+
+</html>

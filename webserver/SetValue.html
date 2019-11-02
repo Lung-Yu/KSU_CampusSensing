@@ -1,0 +1,95 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>校園感測系統</title>
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+</head>
+<!-- This snippet uses Font Awesome 5 Free as a dependency. You can download it at fontawesome.io! -->
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+                <div class="card card-signin my-5">
+                    <div id="device" class="card-body">
+                        <h5 class="card-title text-center">設定感測器臨界值</h5>
+                        <form class="form-signin" method="POST" action="loginAuth.php">
+                            <div class="form-label-group">
+                                <select v-model="selected" class="form-control">
+                                    <option v-for="option in options" v-bind:value="option.value">
+                                        {{ option.text }}
+                                    </option>
+                                </select>
+
+                            </div>
+                            <label for="account">設備</label>
+                            <div class="form-label-group">
+                                <input type="text" id="pm1" class="form-control" placeholder="PM1.0" required
+                                    autofocus>
+                                <label for="account">PM1.0</label>
+                            </div>
+                            <div class="form-label-group">
+                                <input type="text" id="pm25" class="form-control" placeholder="PM2.5" required
+                                    autofocus>
+                                <label for="account">PM2.5</label>
+                            </div>
+                            <div class="form-label-group">
+                                <input type="text" id="pm100" class="form-control" placeholder="PM 10" required
+                                    autofocus>
+                                <label for="account">PM10</label>
+                            </div>
+                            <div class="form-label-group">
+                                <input type="text" id="uv" class="form-control" placeholder="UV" required
+                                    autofocus>
+                                <label for="account">UV</label>
+                            </div>
+
+                            <div class="btn btn-lg btn-primary btn-block text-uppercase" v-on:click="onEnter">
+                                {{content}}</div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        new Vue({
+            el: '#device',
+            data: {
+                content: "確認",
+                selected: 'A002',
+                options: [
+                    { text: 'A001', value: 'A001' },
+                    { text: 'A002', value: 'A002' },
+                    { text: 'A003', value: 'A003' }
+                ]
+            },
+            methods: {
+                onEnter: () => {
+                    console.log(String(new Date()))
+                    alert(String(new Date()))
+
+                    $.post("setvalue.php",
+                        {
+                            PM1:$("#pm1").val(),
+                            PM25:$("#pm25").val(),
+                            PM100:$("#pm100").val(),
+                            UV:$("#uv").val()
+                        },
+                        function (data, status) {
+                            // alert("資料: \n" + data + "\n狀態" + status);
+                        });
+                },
+            },
+        })
+    </script>
+
+
+</body>
+
+</html>
