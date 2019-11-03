@@ -51,7 +51,7 @@
 				<div>
 					<h4> <strong> &nbsp; 設備 </strong></h4>
 					<div id="vue_device">
-						<select class="form-control" v-model="select">
+						<select id="device_val" class="form-control" v-model="select">
 							<option value="A001">A001</option>
 							<option value="A002">A002</option>
 						</select>
@@ -78,7 +78,7 @@
 			</div>
 		</div>
 		<div class="col-lg-4">
-			<div>
+			<div id="tableDiv">
 				<table id="demo">
 				</table>
 			</div>
@@ -104,24 +104,36 @@
 
 			methods: {
 				onSearch: () => {
+					var url = "".concat("SelectData.php","?Device=","A001","&DateS=",$("#DateS").val(),"&DateE=",$("#DateE").val());
+					console.log(url);
 
-					$.get("test.json", function (raw_data, status) {
+					$.post("SelectData.php",{
+						Device:$("#device_val").val(),
+						DateS :"".concat($("#DateS").val()," 00:00:00"),
+						DateE :"".concat($("#DateE").val()," 23:59:59"),
+					}, function (raw_data, status) {
+					// $.get(url, function (raw_data, status) {
 						// alert("Data: " + data + "\nStatus: " + status);
+						// var raw_data2 = JSON.parse(JSON.stringify(raw_data));
+						// console.log("raw data -->"  + typeof(raw_data));
+						// console.log("raw data2 --> " + typeof(raw_data2));
+						// console.log(raw_data2);
 						console.log(raw_data);
 
 						// tableVue.tableData = data;
-
+						$("#tableDiv").empty();
+						$("#tableDiv").append("<table id='demo'></table>");
 						$('#demo').bootstrapTable({
 							columns: [ //欄位設定
 								{ field: 'Device', title: '設備', align: 'center', width: 120, visible: true, sortable: true },
 								{ field: 'PM1', title: 'PM1', align: 'center', width: 120, visible: true, sortable: true },
-								{ Field: 'PM25', title: 'PM2.5', align: 'center', width: 120, visible: true, sortable: true },
+								{ field: 'PM25', title: 'PM2.5', align: 'center', width: 120, visible: true, sortable: true },
 								{ field: 'PM100', title: 'PM10', align: 'left', visible: true },
 								{ field: 'UV', title: 'UV', align: 'left', width: 200, visible: true },
 								{ field: 'Time', title: '時間', align: 'left', width: 200, visible: true }
 							],
 							classes: 'table',
-							data: raw_data,//所有資料
+							data:  JSON.parse(raw_data),//所有資料
 							uniqueId: 'id', //哪一個欄位是key
 							sortName: 'name', //依照那個欄位排序			
 							// height: 450,
@@ -157,7 +169,8 @@
 			},
 
 		})
-
+		$("#DateS").val((new Date()).toISOString().substr(0, 10))
+		$("#DateE").val((new Date()).toISOString().substr(0, 10))
 	</script>
 </body>
 

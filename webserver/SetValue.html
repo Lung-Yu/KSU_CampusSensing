@@ -29,8 +29,7 @@
                             </div>
                             <label for="account">設備</label>
                             <div class="form-label-group">
-                                <input type="text" id="pm1" class="form-control" placeholder="PM1.0" required
-                                    autofocus>
+                                <input type="text" id="pm1" class="form-control" placeholder="PM1.0" required autofocus>
                                 <label for="account">PM1.0</label>
                             </div>
                             <div class="form-label-group">
@@ -44,8 +43,7 @@
                                 <label for="account">PM10</label>
                             </div>
                             <div class="form-label-group">
-                                <input type="text" id="uv" class="form-control" placeholder="UV" required
-                                    autofocus>
+                                <input type="text" id="uv" class="form-control" placeholder="UV" required autofocus>
                                 <label for="account">UV</label>
                             </div>
 
@@ -76,16 +74,27 @@
 
                     $.post("setvalue.php",
                         {
-                            PM1:$("#pm1").val(),
-                            PM25:$("#pm25").val(),
-                            PM100:$("#pm100").val(),
-                            UV:$("#uv").val()
+                            PM1: $("#pm1").val(),
+                            PM25: $("#pm25").val(),
+                            PM100: $("#pm100").val(),
+                            UV: $("#uv").val()
                         },
                         function (data, status) {
                             // alert("資料: \n" + data + "\n狀態" + status);
                         });
                 },
             },
+        })
+
+        $.get("getSetValue.php?device=21",
+         function (data, status) {
+            console.log(data);
+            var obj = JSON.parse(data)[0];
+            
+            $("#pm1").val(obj.PM1);
+            $("#pm25").val(obj.PM25);
+            $("#pm100").val(obj.PM100);
+            $("#uv").val(obj.UV);
         })
     </script>
 
