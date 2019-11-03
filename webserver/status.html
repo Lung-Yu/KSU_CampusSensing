@@ -1,0 +1,152 @@
+<html>
+
+<head>
+    <title>校園感測系統</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+
+</head>
+
+<body>
+    <div class="row">
+        <div class="col-lg-2">
+        </div>
+        <div class="col-lg-10">
+            <h1 class="page-header">&nbsp;資料查詢</h1>
+        </div>
+
+    </div>
+    <hr />
+    </div>
+
+    <div id="page-wrapper">
+        <div class="row">
+            <div class="col-lg-2">
+            </div>
+            <div class="col-lg-10">
+                <h1 class="page-header">&nbsp;目前數值</h1>
+            </div>
+        </div>
+        <div id="app" class="row">
+            <div class="col-lg-2">
+            </div>
+            <div class="col-lg-8">
+                <div class="table-responsive">
+                    <table class="table table-responsive">
+                        <thead>
+
+                        </thead>
+                        <tbody>
+                            <tr class="success">
+                                <td>設備</td>
+                                <td>{{ c_device }}</td>
+                                <td>設定值</td>
+                                <td>{{ s_device }}</td>
+                            </tr>
+                            <tr class="info">
+                                <td>PM1.0</td>
+                                <td>{{c_pm10}}</td>
+                                <td>設定值</td>
+                                <td>{{s_pm10}}</td>
+                            </tr>
+                            <tr class="warning">
+                                <td>PM2.5</td>
+                                <td>{{c_pm25}}</td>
+                                <td>設定值</td>
+                                <td>{{s_pm25}}</td>
+                            </tr>
+                            <tr class="danger">
+                                <td>PM10</td>
+                                <td>{{c_pm100}}</td>
+                                <td>設定值</td>
+                                <td>{{s_pm100}}</td>
+                            </tr>
+                            <tr class="success">
+                                <td>UV</td>
+                                <td>{{c_uv}}</td>
+                                <td>設定值</td>
+                                <td>{{s_uv}}</td>
+                            </tr>
+                            <tr class="info">
+                                <td>Time</td>
+                                <td>{{c_time}}</td>
+                                <td>設定值</td>
+                                <td>{{s_time}}</td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+                </div>
+
+                <a href="SetValue.html" class="btn btn-outline btn-danger">{{ label_setting }}</a>
+                <a href="dataInquiry.html" class="btn btn-outline btn-danger">{{ label_search }}</a>
+
+
+            </div>
+            <div class="col-lg-6">
+
+            </div>
+        </div>
+        <!-- /#page-wrapper -->
+    </div>
+
+    <script>
+        var vue_app = new Vue({
+            el: '#app',
+            data: {
+                label_setting: "設定",
+                label_search: "搜尋",
+                c_device: "",
+                s_device: "",
+                c_pm10: "",
+                s_pm10: "",
+                c_pm25: "",
+                s_pm25: "",
+                c_pm100: "",
+                s_pm100: "",
+                c_uv: "",
+                s_uv: "",
+                c_time: "",
+                s_time: ""
+            }
+        })
+
+        $.get("getSetValue.php", function (data, status) {
+            var obj = JSON.parse(data)[0];
+            // vue_app.s_device = obj['Device'];
+            vue_app.s_device = 'A001';
+            vue_app.s_pm10 = obj['PM1'];
+            vue_app.s_pm100 = obj['PM100'];
+            vue_app.s_pm25 = obj['PM25'];
+            vue_app.s_uv = obj['UV'];
+            // vue_app.s_time = obj['Time'];
+            vue_app.s_time = (new Date()).toISOString().substr(0, 19).replace("T"," ");
+
+        });
+
+        $.get("current_data.php", function (data, status) {
+            var obj = JSON.parse(data)[0];
+            vue_app.c_device = obj['Device'];
+            vue_app.c_pm10 = obj['PM1'];
+            vue_app.c_pm100 = obj['PM100'];
+            vue_app.c_pm25 = obj['PM25'];
+            vue_app.c_uv = obj['UV'];
+            vue_app.c_time = obj['Time'];
+
+        });
+
+
+
+    </script>
+</body>
+
+</html>
